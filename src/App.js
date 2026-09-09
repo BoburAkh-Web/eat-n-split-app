@@ -43,6 +43,14 @@ function App() {
 
   function handleSplitBill(value) {
     console.log(value);
+    setItems((items) =>
+      items.map((item) =>
+        item.id === selectedFriends.id
+          ? { ...item, balance: item.balance + value }
+          : item,
+      ),
+    );
+    setSelectedFriends("");
   }
   return (
     <div className="app">
@@ -61,6 +69,7 @@ function App() {
         <FormSplitBill
           selectedFriends={selectedFriends}
           onSplitBill={handleSplitBill}
+          key={selectedFriends.id}
         />
       )}
     </div>
@@ -163,6 +172,7 @@ function FormSplitBill({ selectedFriends, onSplitBill }) {
   function handleSubmit(e) {
     e.preventDefault();
     if (!bill || !paidByUser) return;
+    onSplitBill(whoIsPaing === "user" ? paidByFriend : -paidByUser);
   }
   return (
     <form className="form-split-bill" onSubmit={handleSubmit}>
